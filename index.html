@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--
     IMPORTANT: To make images load quickly when you upload this project to GitHub,
@@ -183,39 +184,43 @@
         }
 
         .gallery-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
             max-width: 1400px;
-            margin: 50px auto 0;
+            margin: 40px auto 0;
+            align-items: start;
+            padding: 0 12px;
         }
 
         .photo-card {
             background: white;
-            padding: 18px;
-            border-radius: 16px;
-            box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+            padding: 12px;
+            border-radius: 14px;
+            box-shadow: 0 14px 32px rgba(0,0,0,0.28);
             transform-style: preserve-3d;
-            transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
+            transition: transform 0.28s ease-in-out, box-shadow 0.22s ease;
             cursor: pointer;
-            flex: 1 1 320px; /* responsive flex-basis */
-            max-width: 360px;
-            min-width: 220px;
             border: 4px solid #ff9100;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
         }
 
         .photo-card:hover {
-            transform: rotateY(15deg) rotateX(5deg) scale(1.05) translateZ(30px);
-            box-shadow: 0 30px 60px rgba(255, 145, 0, 0.6);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 26px 60px rgba(0,0,0,0.32);
         }
 
         .photo-card img {
             width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 15px;
-            margin-bottom: 15px;
+            height: auto;
+            max-height: 56vh; /* keep images large on tall screens but bounded */
+            object-fit: contain; /* show whole image without cropping */
+            background: linear-gradient(180deg,#fff,#f6f6f6); /* subtle backdrop */
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display:block;
         }
 
         /* Make hero text responsive using clamp */
@@ -556,11 +561,12 @@
 
         /* Lightbox styles */
         #lightbox { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.88); z-index: 10005; }
-        #lightbox .inner { max-width: 96%; max-height: 92%; position: relative; text-align: center; }
-        #lightbox img { max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
-        #lightbox #lightbox-caption { margin-top: 10px; color: #fff; font-size: 1rem; }
+        #lightbox .inner { max-width: 96%; max-height: 92%; position: relative; text-align: center; display:flex; flex-direction:column; align-items:center; }
+        #lightbox img { width: auto; max-width: 96%; max-height: 84vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); cursor: zoom-out; }
+        #lightbox #lightbox-caption { margin-top: 10px; color: #fff; font-size: 1rem; max-width: 90%; text-align:center; }
         #lightbox-close { position: absolute; right: -10px; top: -10px; background: #fff; border-radius: 50%; border: none; padding: 6px 9px; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.4); }
         #lightbox-download { display:inline-block; margin-left:10px; color:#fff; background:rgba(255,255,255,0.08); padding:6px 10px; border-radius:8px; text-decoration:none }
+        #lightbox-prev, #lightbox-next { position:relative; background: rgba(255,255,255,0.9); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -580,7 +586,11 @@
         <!-- Lightbox for gallery images -->
         <div id="lightbox" role="dialog" aria-hidden="true">
             <div class="inner" role="document">
-                <button id="lightbox-close" aria-label="Close">✖</button>
+                <div style="position:relative; width:100%; display:flex; justify-content:flex-end;">
+                    <button id="lightbox-prev" aria-label="Previous" style="margin-right:8px; display:none">◀</button>
+                    <button id="lightbox-close" aria-label="Close">✖</button>
+                    <button id="lightbox-next" aria-label="Next" style="margin-left:8px; display:none">▶</button>
+                </div>
                 <img id="lightbox-img" alt="" />
                 <div id="lightbox-caption" aria-live="polite"></div>
                 <a id="lightbox-download" href="#" download target="_blank">Download</a>
@@ -610,19 +620,19 @@
             <p style="font-size: 1.5rem; margin-bottom: 50px;">Hover over the cards for a little magic! Enjoy exploring our memories!</p>
             <div class="gallery-container">
                 <div class="photo-card">
-                    <img loading="lazy" src="gift.png" alt="First Meet - Taniya & Rahul">
+                    <img loading="lazy" src="images/red.png" alt="First Meet - Taniya & Rahul" data-gallery-index="0" srcset="images/red.png 1x, images/red@2x.png 2x" sizes="(max-width:600px) 90vw, 33vw">
                     <h3>First Meet & Date ✨</h3>
                 </div>
                 <div class="photo-card">
-                    <img loading="lazy" src="cake_cut.png" alt="Crazy Adventures - Taniya & Rahul">
+                    <img loading="lazy" src="images/cake_cut.png" alt="Crazy Adventures - Taniya & Rahul" data-gallery-index="1" srcset="images/cake_cut.png 1x, images/cake_cut@2x.png 2x" sizes="(max-width:600px) 90vw, 33vw">
                     <h3>Crazy Adventures 🌟</h3>
                 </div>
                 <div class="photo-card">
-                    <img loading="lazy" src="black1.png" alt="My Favorite Photo - Taniya & Rahul">
+                    <img loading="lazy" src="images/blue.png" alt="My Favorite Photo - Taniya & Rahul" data-gallery-index="2" srcset="images/blue.png 1x, images/blue@2x.png 2x" sizes="(max-width:600px) 90vw, 33vw">
                     <h3>My Favorite Photo 💝</h3>
                 </div>
                 <div class="photo-card">
-                    <img loading="lazy" src="gift_tannu.png" alt="The Future Awaits - Taniya & Rahul">
+                    <img loading="lazy" src="images/gift_tannu.png" alt="The Future Awaits - Taniya & Rahul" data-gallery-index="3" srcset="images/gift_tannu.png 1x, images/gift_tannu@2x.png 2x" sizes="(max-width:600px) 90vw, 33vw">
                     <h3>The Future Awaits 🚀</h3>
                 </div>
             </div>
@@ -932,6 +942,9 @@
         }
 
         // --- LIGHTBOX FUNCTIONALITY ---
+        let galleryImages = [];
+        let currentLightboxIndex = -1;
+
         function openLightbox(src, caption) {
             const lb = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
@@ -946,6 +959,25 @@
             document.getElementById('lightbox-close').focus();
         }
 
+        function openLightboxByIndex(index) {
+            if (!galleryImages || galleryImages.length === 0) return;
+            index = Math.max(0, Math.min(galleryImages.length - 1, index));
+            currentLightboxIndex = index;
+            const {src, alt} = galleryImages[index];
+            openLightbox(src, alt);
+            // show prev/next buttons if multiple
+            document.getElementById('lightbox-prev').style.display = (galleryImages.length > 1) ? 'inline-block' : 'none';
+            document.getElementById('lightbox-next').style.display = (galleryImages.length > 1) ? 'inline-block' : 'none';
+        }
+
+        function showLightboxByDelta(delta){
+            if (currentLightboxIndex === -1) return;
+            let next = currentLightboxIndex + delta;
+            if (next < 0) next = galleryImages.length - 1;
+            if (next >= galleryImages.length) next = 0;
+            openLightboxByIndex(next);
+        }
+
         function closeLightbox() {
             const lb = document.getElementById('lightbox');
             lb.style.display = 'none';
@@ -955,18 +987,34 @@
 
         // attach handlers after DOM load
         document.addEventListener('DOMContentLoaded', () => {
-            // gallery images open lightbox
-            document.querySelectorAll('.gallery-container .photo-card img').forEach(img => {
+            // gallery images open lightbox and register into galleryImages
+            galleryImages = [];
+            document.querySelectorAll('.gallery-container .photo-card img').forEach((img, idx) => {
                 img.style.cursor = 'zoom-in';
-                img.addEventListener('click', () => openLightbox(img.src, img.alt || img.closest('.photo-card')?.querySelector('h3')?.textContent));
-                img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openLightbox(img.src, img.alt); });
                 img.setAttribute('tabindex','0');
+                img.setAttribute('role','button');
+                img.setAttribute('aria-label', img.alt || 'Open image');
+                // add to galleryImages array for navigation
+                galleryImages.push({ src: img.currentSrc || img.src, alt: img.alt || '' });
+                img.dataset.galleryIndex = idx;
+                img.addEventListener('click', () => openLightboxByIndex(Number(img.dataset.galleryIndex)));
+                img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightboxByIndex(Number(img.dataset.galleryIndex)); } });
             });
 
-            // close handlers
+            // wire lightbox nav buttons
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            prevBtn.addEventListener('click', () => showLightboxByDelta(-1));
+            nextBtn.addEventListener('click', () => showLightboxByDelta(1));
+
+            // close handlers and keyboard navigation
             document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
             document.getElementById('lightbox').addEventListener('click', (e) => { if (e.target.id === 'lightbox') closeLightbox(); });
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') return closeLightbox();
+                if (e.key === 'ArrowRight') return showLightboxByDelta(1);
+                if (e.key === 'ArrowLeft') return showLightboxByDelta(-1);
+            });
         });
 
         // --- SCROLL ANIMATIONS ---
